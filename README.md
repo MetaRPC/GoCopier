@@ -13,4 +13,4 @@ go get github.com/MetaRPC/GoCopier
 
 ## Quick Start
 
-See [Quick Start Documentation](https://github.com/MetaRPC/GoCopier/tree/main/docsAll_Guides/Your_First_Project/) for a 10-minute walkthrough.
+See [Quick Start Documentation](https://github.com/MetaRPC/GoCopier/blob/main/docs/All_Guides/Your_First_Project.md) for a 10-minute walkthrough.
