@@ -13,21 +13,17 @@ type CopierAccount struct {
 	Conn       *grpc.ClientConn
 }
 
-func NewCopierAccount(endpoint, userKey, managerKey string) (*CopierAccount, error) {
-	if managerKey == "" {
-		managerKey = userKey
-	}
+func NewCopierAccount(endpoint, userKey string) (*CopierAccount, error) {
 	return &CopierAccount{
 		Endpoint:   endpoint,
 		UserKey:    userKey,
-		ManagerKey: managerKey,
+		ManagerKey: userKey,
 	}, nil
 }
 
 func (a *CopierAccount) AuthContext(ctx context.Context) context.Context {
 	md := metadata.Pairs(
 		"authorization", "Bearer "+a.UserKey,
-		"x-metarpc-manager", a.ManagerKey,
 		"x-metarpc-client-sdk", "GoCopier/1.0.0",
 	)
 	return metadata.NewOutgoingContext(ctx, md)

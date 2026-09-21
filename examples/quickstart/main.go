@@ -15,7 +15,7 @@ func main() {
 	slave, _ := demo.OpenDemoAccount(ctx, &copier.GuiDemoOpenAccountRequest{Server: "MetaQuotes-Demo"})
 	fmt.Printf("Master: %d, Slave: %d\n", master.Login, slave.Login)
 
-	svc, err := copier.NewCopierService("copy.mrpc.pro:443", "YOUR_USER_KEY", "YOUR_MANAGER_KEY")
+	svc, err := copier.NewCopierService("copy.mrpc.pro:443", "YOUR_USER_KEY")
 	if err != nil {
 		log.Fatal(err)
 	}

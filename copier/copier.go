@@ -2,15 +2,14 @@ package copier
 
 import (
 	"context"
-	"fmt"
 )
 
 type CopierService struct {
 	Account *CopierAccount
 }
 
-func NewCopierService(endpoint, userKey, managerKey string) (*CopierService, error) {
-	acc, err := NewCopierAccount(endpoint, userKey, managerKey)
+func NewCopierService(endpoint, userKey string) (*CopierService, error) {
+	acc, err := NewCopierAccount(endpoint, userKey)
 	if err != nil {
 		return nil, err
 	}

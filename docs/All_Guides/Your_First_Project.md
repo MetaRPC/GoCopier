@@ -52,7 +52,7 @@ func main() {
 	fmt.Printf("Master: %d, Slave: %d\n", master.Login, slave.Login)
 
 	// 2. Connect to Copier Service
-	client, err := copier.NewCopierService("copy.mrpc.pro:443", "YOUR_USER_KEY", "YOUR_MANAGER_KEY")
+	client, err := copier.NewCopierService("copy.mrpc.pro:443", "YOUR_USER_KEY", "")
 	if err != nil {
 		log.Fatalf("Failed to connect: %v", err)
 	}
@@ -61,7 +61,6 @@ func main() {
 	// 3. Start Copier
 	reply, err := client.Start(ctx, &copier.StartRequest{
 		UserKey:    "YOUR_USER_KEY",
-		ManagerKey: "YOUR_MANAGER_KEY",
 		Master:     &copier.Account{Type: "MT5", User: master.Login, Password: master.Password, Server: master.Server},
 		Slave:      &copier.Account{Type: "MT5", User: slave.Login, Password: slave.Password, Server: slave.Server},
 		RiskType:   "LotMultiplier",
