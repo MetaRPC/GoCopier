@@ -69,3 +69,13 @@ type GuiDemoOpenAccountReply struct {
 	Investor   string `json:"investor"`
 	Server     string `json:"server"`
 }
+
+type ConnectExReply struct {
+	TerminalInstanceGuid string `json:"terminal_instance_guid"`
+	TerminalType         string `json:"terminal_type"`
+}
+
+type DisconnectReply struct {
+	UniqueIdentifier    string `json:"unique_identifier"`
+	FullLifeTimeSeconds int    `json:"full_life_time_seconds"`
+}
