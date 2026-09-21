@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 option csharp_namespace = "tradecopy.Grpc";
+option go_package = "github.com/MetaRPC/GoCopier/copier/copierpb";
 
 package copier;
 
