@@ -6,6 +6,7 @@ type Account struct {
 	Password string `json:"password"`
 	Server   string `json:"server"`
 	Name     string `json:"name"`
+	Id       string `json:"id"`
 }
 
 type StartRequest struct {

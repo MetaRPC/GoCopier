@@ -33,7 +33,7 @@ func (s *CopierService) Start(ctx context.Context, req *StartRequest) (*StartRep
 		mgrKey = s.Account.ManagerKey
 	}
 
-	callCtx, cancel := context.WithTimeout(s.Account.AuthContext(ctx), 15*time.Second)
+	callCtx, cancel := context.WithTimeout(s.Account.AuthContext(ctx), 180*time.Second)
 	defer cancel()
 
 	pbReq := &pb.StartRequest{
@@ -45,6 +45,7 @@ func (s *CopierService) Start(ctx context.Context, req *StartRequest) (*StartRep
 			Password: req.Master.Password,
 			Server:   req.Master.Server,
 			Name:     req.Master.Name,
+			Id:       req.Master.Id,
 		},
 		Slave: &pb.Account{
 			Type:     req.Slave.Type,
@@ -52,6 +53,7 @@ func (s *CopierService) Start(ctx context.Context, req *StartRequest) (*StartRep
 			Password: req.Slave.Password,
 			Server:   req.Slave.Server,
 			Name:     req.Slave.Name,
+			Id:       req.Slave.Id,
 		},
 		RiskType:           req.RiskType,
 		RiskValue:          req.RiskValue,
