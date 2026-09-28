@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/MetaRPC/GoCopier/copier"
@@ -13,6 +14,11 @@ func main() {
 	fmt.Println("=== MetaRPC GoCopier Trade Replication Quick Start ===")
 	ctx := context.Background()
 	apiKey := "TRIAL"
+	if len(os.Args) > 1 {
+		apiKey = os.Args[1]
+	} else if env := os.Getenv("MRPC_API_KEY"); env != "" {
+		apiKey = env
+	}
 
 	demo, err := copier.NewDemoAccountClient("https://mt5.mrpc.pro")
 	if err != nil {
