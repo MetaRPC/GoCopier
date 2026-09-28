@@ -37,7 +37,7 @@ func main() {
 		// 9. Cleanly Disconnect Terminal Sessions
 		fmt.Println("\n[9] Disconnecting terminal sessions cleanly via /Disconnect...")
 		if masterGuid != "" {
-			discM, err := demo.Disconnect(ctx, masterGuid, apiKey)
+			discM, err := demo.Disconnect(ctx, masterGuid, apiKey, true)
 			if err != nil {
 				fmt.Printf("    Master disconnect error: %v\n", err)
 			} else {
@@ -45,7 +45,7 @@ func main() {
 			}
 		}
 		if slaveGuid != "" {
-			discS, err := demo.Disconnect(ctx, slaveGuid, apiKey)
+			discS, err := demo.Disconnect(ctx, slaveGuid, apiKey, true)
 			if err != nil {
 				fmt.Printf("    Slave disconnect error: %v\n", err)
 			} else {

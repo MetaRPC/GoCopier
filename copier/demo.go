@@ -128,19 +128,34 @@ func (d *DemoAccountClient) ConnectEx(ctx context.Context, user uint64, password
 	}, nil
 }
 
-func (d *DemoAccountClient) Disconnect(ctx context.Context, terminalId string, optApiKey ...string) (*DisconnectReply, error) {
+// Disconnect disconnects an active terminal session.
+// Optional arguments can be:
+// - string: apiKey (defaults to "TRIAL")
+// - bool: deleteOnDisconnect (defaults to false; if true, permanently deletes the terminal)
+func (d *DemoAccountClient) Disconnect(ctx context.Context, terminalId string, opts ...any) (*DisconnectReply, error) {
 	apiKey := "TRIAL"
-	if len(optApiKey) > 0 && optApiKey[0] != "" {
-		apiKey = optApiKey[0]
+	deleteOnDisconnect := false
+	for _, opt := range opts {
+		switch v := opt.(type) {
+		case string:
+			if v != "" {
+				apiKey = v
+			}
+		case bool:
+			deleteOnDisconnect = v
+		}
 	}
 
-	reqUrl := fmt.Sprintf("%s/Disconnect", d.Endpoint)
+	reqUrl := fmt.Sprintf("%s/Disconnect?delete=%t", d.Endpoint, deleteOnDisconnect)
 	httpReq, err := http.NewRequestWithContext(ctx, "GET", reqUrl, nil)
 	if err != nil {
 		return nil, err
 	}
 	httpReq.Header.Set("APIKey", apiKey)
 	httpReq.Header.Set("id", terminalId)
+	if deleteOnDisconnect {
+		httpReq.Header.Set("delete", "true")
+	}
 	httpReq.Header.Set("User-Agent", "GoCopier/1.0.0")
 
 	resp, err := d.client.Do(httpReq)
