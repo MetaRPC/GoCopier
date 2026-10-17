@@ -8,7 +8,7 @@ Official Go SDK for the MetaRPC Trade Copier high-performance trade replication 
 ## Installation
 
 ```bash
-go get github.com/MetaRPC/GoCopier
+go get github.com/MetaRPC/GoCopier/copier
 ```
 
 ## 🏃 How to Run Examples

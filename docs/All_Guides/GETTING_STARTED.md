@@ -7,7 +7,7 @@ Welcome to **GoCopier**, the official Go client library for MetaRPC's ultra-low 
 Install GoCopier using your language's package manager:
 
 ```bash
-go get github.com/MetaRPC/GoCopier
+go get github.com/MetaRPC/GoCopier/copier
 ```
 
 ## Infrastructure Endpoints
