@@ -3,6 +3,7 @@ package copier
 import (
 	"context"
 	"crypto/tls"
+	"fmt"
 	"strings"
 
 	"google.golang.org/grpc"
@@ -18,6 +19,9 @@ type CopierAccount struct {
 }
 
 func NewCopierAccount(endpoint, userKey string) (*CopierAccount, error) {
+	if userKey == "" || strings.EqualFold(userKey, "TRIAL") || strings.IndexFunc(userKey, func(r rune) bool { return r < 33 || r > 126 }) >= 0 {
+        return nil, fmt.Errorf("a real owner API key is required (printable ASCII, no whitespace)")
+    }
 	clean := strings.TrimPrefix(endpoint, "https://")
 	clean = strings.TrimPrefix(clean, "http://")
 	clean = strings.TrimSuffix(clean, "/")
@@ -38,10 +42,12 @@ func NewCopierAccount(endpoint, userKey string) (*CopierAccount, error) {
 }
 
 func (a *CopierAccount) AuthContext(ctx context.Context) context.Context {
-	md := metadata.Pairs(
-		"authorization", "Bearer "+a.UserKey,
+	md, _ := metadata.FromOutgoingContext(ctx)
+	md = md.Copy()
+	for key, values := range metadata.Pairs(
+		"apikey", a.UserKey,
 		"x-metarpc-client-sdk", "GoCopier/1.0.0",
-	)
+	) { md.Set(key, values...) }
 	return metadata.NewOutgoingContext(ctx, md)
 }
 

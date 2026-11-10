@@ -2,6 +2,7 @@ package copier
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	pb "github.com/MetaRPC/GoCopier/copier/copierpb"
@@ -24,6 +25,7 @@ func NewCopierService(endpoint, userKey string) (*CopierService, error) {
 }
 
 func (s *CopierService) Start(ctx context.Context, req *StartRequest) (*StartReply, error) {
+	if req == nil || req.Master == nil || req.Slave == nil { return nil, fmt.Errorf("master and slave accounts are required") }
 	userKey := req.UserKey
 	if userKey == "" {
 		userKey = s.Account.UserKey

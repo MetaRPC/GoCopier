@@ -1,36 +1,36 @@
-# GoCopier
+# MetaRPC Go Trade Copier SDK
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Docs](https://img.shields.io/badge/docs-online-green.svg)](https://github.com/MetaRPC/GoCopier/tree/main/docs)
+Authenticate, configure a master–follower relationship, inspect its state, pause and remove it.
 
-Official Go SDK for the MetaRPC Trade Copier high-performance trade replication engine via gRPC (`copy.mrpc.pro:443`).
+**[Documentation](https://metarpc.github.io/GoCopier/) · [Quickstart](https://metarpc.github.io/GoCopier/quickstart/) · [Authentication](https://metarpc.github.io/GoCopier/authentication/) · [API reference](https://metarpc.github.io/GoCopier/reference/)**
 
-## Installation
+## Install from source
 
-```bash
-go get github.com/MetaRPC/GoCopier/copier
-```
-
-## 🏃 How to Run Examples
-
-Clone the repository and run the trade copier example out-of-the-box:
+Requires Go 1.21+.
 
 ```bash
 git clone https://github.com/MetaRPC/GoCopier.git
-cd GoCopier/examples/quickstart
+cd GoCopier
 go mod download
-
-# 1. Run with default TRIAL key:
-go run main.go
-
-# 2. Or pass your MetaRPC API key directly as an argument:
-go run main.go your_api_key_here
-
-# 3. Or use the MRPC_API_KEY environment variable:
-export MRPC_API_KEY="your_api_key_here"        # Windows CMD: set MRPC_API_KEY=your_api_key_here
-go run main.go                                 # Windows PowerShell: $env:MRPC_API_KEY="your_api_key_here"
+go test ./...
 ```
 
-## Quick Start
+## First request
 
-See [Quick Start Documentation](https://github.com/MetaRPC/GoCopier/blob/main/docs/All_Guides/Your_First_Project.md) for a 10-minute walkthrough.
+Set `MRPC_API_KEY` to your real owner API key in your environment, then run:
+
+```bash
+go run ./examples/list
+```
+
+This List example is read-only: no account creation or trades. Java on Windows uses `;` instead of `:` in classpaths.
+
+## Authentication
+
+Every SDK call sends `ApiKey` (`apikey` in gRPC metadata). The gRPC body also carries `user_key`; the header does not replace it. `TRIAL` is not an owner key. Read the [verified transport contract](https://metarpc.github.io/GoCopier/authentication/).
+
+## Scope and verification
+
+Core operations: Start · List · Pause · Remove. Advanced server features are distinguished from the supported wrapper surface. Review legacy replication examples before using them with disposable demos. Standard tests need no broker credentials.
+
+See [testing and contributing](https://metarpc.github.io/GoCopier/testing/) for the regression suite, demo checklist and Pages build. Edit `docs/`; generated `site/` output is not source.
