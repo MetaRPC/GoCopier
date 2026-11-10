@@ -48,7 +48,7 @@ func (d *DemoAccountClient) OpenDemoAccount(ctx context.Context, req *GuiDemoOpe
 	}
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
+	body, err := readDemoBody(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func (d *DemoAccountClient) ConnectEx(ctx context.Context, user uint64, password
 	}
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
+	body, err := readDemoBody(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -164,7 +164,7 @@ func (d *DemoAccountClient) Disconnect(ctx context.Context, terminalId string, o
 	}
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
+	body, err := readDemoBody(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -232,7 +232,7 @@ func (d *DemoAccountClient) OrderSend(ctx context.Context, terminalId, symbol, o
 	}
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
+	body, err := readDemoBody(resp.Body)
 	if err != nil {
 		return 0, err
 	}
@@ -277,7 +277,7 @@ func (d *DemoAccountClient) OpenedOrders(ctx context.Context, terminalId string,
 	}
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
+	body, err := readDemoBody(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -325,7 +325,7 @@ func (d *DemoAccountClient) OrderClose(ctx context.Context, terminalId string, t
 	}
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
+	body, err := readDemoBody(resp.Body)
 	if err != nil {
 		return "", err
 	}
@@ -337,3 +337,28 @@ func (d *DemoAccountClient) OrderClose(ctx context.Context, terminalId string, t
 	return string(body), nil
 }
 
+// HTTP 200 does not imply successful execution in the MRPC API.
+func readDemoBody(reader io.Reader) ([]byte, error) {
+	body, err := io.ReadAll(reader)
+	if err != nil {
+		return nil, err
+	}
+	var envelope struct {
+		Error json.RawMessage `json:"error"`
+	}
+	if err := json.Unmarshal(body, &envelope); err != nil {
+		return nil, fmt.Errorf("invalid MRPC JSON response")
+	}
+	raw := strings.TrimSpace(string(envelope.Error))
+	if raw != "" && raw != "null" && raw != "false" {
+		var detail struct {
+			Code string `json:"errorCode"`
+		}
+		_ = json.Unmarshal(envelope.Error, &detail)
+		if detail.Code == "" {
+			detail.Code = "API_ERROR"
+		}
+		return nil, fmt.Errorf("MRPC request failed: %s", detail.Code)
+	}
+	return body, nil
+}
