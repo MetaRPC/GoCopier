@@ -11,9 +11,10 @@ import (
 )
 
 func main() {
+    if os.Getenv("MRPC_LIVE_TESTS") != "1" { log.Fatal("Set MRPC_LIVE_TESTS=1 explicitly to run demo trading") }
 	fmt.Println("=== MetaRPC GoCopier Trade Replication Quick Start ===")
 	ctx := context.Background()
-	apiKey := "TRIAL"
+	apiKey := ""
 	if len(os.Args) > 1 {
 		apiKey = os.Args[1]
 	} else if env := os.Getenv("MRPC_API_KEY"); env != "" {

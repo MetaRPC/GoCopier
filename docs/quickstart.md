@@ -13,7 +13,7 @@ go mod download
 go test ./...
 ```
 
-Java on Windows uses `;` for classpath separators. Run C++ builds in a Visual Studio developer shell. Activate your Python virtual environment before installing.
+
 
 ## 2. Set your owner key
 
