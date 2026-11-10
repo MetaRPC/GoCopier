@@ -12,6 +12,13 @@ import (
 )
 
 func main() {
+	platform := os.Getenv("COPIER_PLATFORM")
+	if platform == "" {
+		platform = "MT5"
+	}
+	if platform != "MT4" && platform != "MT5" {
+		panic("COPIER_PLATFORM must be MT4 or MT5")
+	}
 	scan := bufio.NewScanner(os.Stdin)
 	v := make([]string, 13)
 	for i := range v {
@@ -31,7 +38,7 @@ func main() {
 		if e != nil {
 			panic(e)
 		}
-		return &copier.Account{Type: "MT5", User: u, Password: v[i+1], Server: v[i+2], Id: v[i+3]}
+		return &copier.Account{Type: platform, User: u, Password: v[i+1], Server: v[i+2], Id: v[i+3]}
 	}
 	var r any
 	ctx := context.Background()
