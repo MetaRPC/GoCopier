@@ -12,12 +12,22 @@ import (
 )
 
 func main() {
-	platform := os.Getenv("COPIER_PLATFORM")
-	if platform == "" {
-		platform = "MT5"
-	}
-	if platform != "MT4" && platform != "MT5" {
-		panic("COPIER_PLATFORM must be MT4 or MT5")
+	platform := func(i int) string {
+		name := "COPIER_MASTER_PLATFORM"
+		if i == 6 {
+			name = "COPIER_SLAVE_PLATFORM"
+		}
+		p := os.Getenv(name)
+		if p == "" {
+			p = os.Getenv("COPIER_PLATFORM")
+		}
+		if p == "" {
+			p = "MT5"
+		}
+		if p != "MT4" && p != "MT5" && p != "CT" && p != "TL" {
+			panic("Copier platform must be MT4, MT5, CT or TL")
+		}
+		return p
 	}
 	scan := bufio.NewScanner(os.Stdin)
 	v := make([]string, 13)
@@ -38,7 +48,7 @@ func main() {
 		if e != nil {
 			panic(e)
 		}
-		return &copier.Account{Type: platform, User: u, Password: v[i+1], Server: v[i+2], Id: v[i+3]}
+		return &copier.Account{Type: platform(i), User: u, Password: v[i+1], Server: v[i+2], Id: v[i+3]}
 	}
 	var r any
 	ctx := context.Background()

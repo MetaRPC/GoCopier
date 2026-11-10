@@ -24,7 +24,7 @@ const (
 // A trading account to connect to.
 type Account struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// "MT4" or "MT5".
+	// MT4, MT5, MT4_MTAPI, MT5_MTAPI, MT4_MRPC, MT5_MRPC, CT or TL.
 	Type     string `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
 	User     uint64 `protobuf:"varint,2,opt,name=user,proto3" json:"user,omitempty"`
 	Password string `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
